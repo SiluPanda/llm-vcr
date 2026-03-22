@@ -10,29 +10,29 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 - [ ] **Configure package.json bin entry** -- Add `"bin": { "llm-vcr": "./bin/llm-vcr.js" }` to `package.json` for the CLI binary. | Status: not_done
 - [ ] **Configure package.json exports map** -- Add subpath exports for `llm-vcr/vitest`, `llm-vcr/jest`, and `llm-vcr/mocha` pointing to their respective dist files. | Status: not_done
 - [ ] **Create directory structure** -- Create all directories: `src/interceptor/`, `src/matching/`, `src/streaming/`, `src/streaming/parsers/`, `src/frameworks/`, `src/__tests__/`, `src/__tests__/matching/`, `src/__tests__/streaming/`, `bin/`. | Status: not_done
-- [ ] **Configure ESLint** -- Add an `.eslintrc` or `eslint.config` file appropriate for the TypeScript source. | Status: not_done
-- [ ] **Configure Vitest** -- Add a `vitest.config.ts` if needed, or confirm the `vitest run` script works with the existing `tsconfig.json`. | Status: not_done
+- [x] **Configure ESLint** -- Add an `.eslintrc` or `eslint.config` file appropriate for the TypeScript source. | Status: done
+- [x] **Configure Vitest** -- Add a `vitest.config.ts` if needed, or confirm the `vitest run` script works with the existing `tsconfig.json`. | Status: done
 
 ---
 
 ## Phase 2: Type Definitions (`src/types.ts`)
 
-- [ ] **Define VCRMode type** -- `type VCRMode = 'record' | 'replay' | 'auto' | 'passthrough'`. | Status: not_done
+- [x] **Define VCRMode type** -- `type VCRMode = 'record' | 'replay' | 'auto' | 'passthrough'`. | Status: done
 - [ ] **Define VCRConfig interface** -- Include all fields: `cassettesDir`, `mode`, `scrub`, `matching`, `streaming`, `providerPatterns`, `interceptHttp`, `recordErrors`, `gzip`, and `transformEntry` hook. | Status: not_done
 - [ ] **Define ScrubConfig interface** -- Fields: `patterns` (RegExp[]), `bodyPatterns` (RegExp[]), `replacement` (string), `envVarMap` (Record<string, string>). | Status: not_done
 - [ ] **Define MatchingConfig interface** -- Fields: `strategy` ('default' | 'normalized' | 'structural' | 'custom'), `matcher` (MatcherFn), `matchThreshold` (number), `order` ('ordered' | 'unordered'). | Status: not_done
 - [ ] **Define MatcherFn type** -- `(request: RecordedRequest, entry: CassetteEntry) => number`. | Status: not_done
 - [ ] **Define StreamingConfig interface** -- Field: `replaySpeed` ('instant' | 'realtime' | number). | Status: not_done
 - [ ] **Define ProviderPattern interface** -- Fields: `name` (string), `pattern` (RegExp), `streamParser` (optional StreamParser). | Status: not_done
-- [ ] **Define Cassette interface** -- Fields: `version` (number), `name` (string), `recordedAt` (string), `entries` (CassetteEntry[]). | Status: not_done
-- [ ] **Define CassetteEntry interface** -- Fields: `request` (RecordedRequest), `response` (RecordedResponse), `metadata` (EntryMetadata). | Status: not_done
-- [ ] **Define RecordedRequest interface** -- Fields: `provider` (string), `url` (string), `method` (string), `headers` (Record<string, string>), `body` (Record<string, unknown>). | Status: not_done
+- [x] **Define Cassette interface** -- Fields: `version` (number), `name` (string), `recordedAt` (string), `entries` (CassetteEntry[]). | Status: done
+- [x] **Define CassetteEntry interface** -- Fields: `request` (RecordedRequest), `response` (RecordedResponse), `metadata` (EntryMetadata). | Status: done
+- [x] **Define RecordedRequest interface** -- Fields: `provider` (string), `url` (string), `method` (string), `headers` (Record<string, string>), `body` (Record<string, unknown>). | Status: done
 - [ ] **Define RecordedResponse interface** -- Fields: `status` (number), `headers` (Record<string, string>), `body?`, `streaming?` (boolean), `chunks?` (StreamChunk[]), `assembled?` (AssembledResponse), `streamError?` (boolean), `streamErrorMessage?` (string). | Status: not_done
 - [ ] **Define StreamChunk interface** -- Fields: `data` (string), `event?` (string), `timestamp` (number). | Status: not_done
 - [ ] **Define AssembledResponse interface** -- Fields: `content?` (string), `finish_reason?` (string), `usage?` (token counts), `tool_calls?` (array). | Status: not_done
-- [ ] **Define EntryMetadata interface** -- Fields: `recordedAt` (string), `durationMs` (number), `requestHash` (string), `costEstimate?` (input/output tokens and USD). | Status: not_done
+- [x] **Define EntryMetadata interface** -- Fields: `recordedAt` (string), `durationMs` (number), `requestHash` (string), `costEstimate?` (input/output tokens and USD). | Status: done
 - [ ] **Define CassetteSummary interface** -- Fields: `name`, `filePath`, `entryCount`, `totalDurationMs`, `totalTokens`, `recordedAt`. | Status: not_done
-- [ ] **Define CassetteOptions interface** -- Fields: `mode?`, `matching?`, `streaming?`, `transformEntry?`, `recordErrors?`. | Status: not_done
+- [x] **Define CassetteOptions interface** -- Fields: `mode?`, `matching?`, `streaming?`, `transformEntry?`, `recordErrors?`. | Status: done
 - [ ] **Define CassetteController interface** -- Fields: `start()`, `stop()`, `readonly state`, `readonly entries`. | Status: not_done
 - [ ] **Define StreamParser interface** -- Methods: `parseChunk(data: string)`, `isEndOfStream(data: string)`, `assemble(chunks: unknown[])`. | Status: not_done
 
@@ -41,27 +41,27 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 ## Phase 3: Error Classes (`src/errors.ts`)
 
 - [ ] **Implement CassetteMismatchError** -- Extends `Error`. Fields: `request` (RecordedRequest), `availableEntries` (array of entry + score). Include a descriptive message with unmatched request summary and available entries with match scores. | Status: not_done
-- [ ] **Implement CassetteNotFoundError** -- Extends `Error`. Fields: `cassetteName` (string), `filePath` (string). Message indicates which cassette was expected and where. | Status: not_done
-- [ ] **Implement CassetteCorruptError** -- Extends `Error`. Thrown when a cassette file contains invalid JSON or is missing required fields. Include the file path and parse error details. | Status: not_done
+- [x] **Implement CassetteNotFoundError** -- Extends `Error`. Fields: `cassetteName` (string), `filePath` (string). Message indicates which cassette was expected and where. | Status: done
+- [x] **Implement CassetteCorruptError** -- Extends `Error`. Thrown when a cassette file contains invalid JSON or is missing required fields. Include the file path and parse error details. | Status: done
 
 ---
 
 ## Phase 4: Provider Detection (`src/providers.ts`)
 
-- [ ] **Define default provider URL patterns** -- OpenAI: `api.openai.com/v1/*`. Azure OpenAI: `*.openai.azure.com/openai/deployments/*/chat/completions*`. Anthropic: `api.anthropic.com/v1/messages`. Google: both `generateContent` and `streamGenerateContent` patterns. | Status: not_done
-- [ ] **Implement provider detection from URL** -- Given a URL string, return the provider name (`'openai'`, `'anthropic'`, `'google'`, or `'unknown'`). Check custom patterns first, then defaults. | Status: not_done
+- [x] **Define default provider URL patterns** -- OpenAI: `api.openai.com/v1/*`. Azure OpenAI: `*.openai.azure.com/openai/deployments/*/chat/completions*`. Anthropic: `api.anthropic.com/v1/messages`. Google: both `generateContent` and `streamGenerateContent` patterns. | Status: done
+- [x] **Implement provider detection from URL** -- Given a URL string, return the provider name (`'openai'`, `'anthropic'`, `'google'`, or `'unknown'`). Check custom patterns first, then defaults. | Status: done
 - [ ] **Support custom provider pattern registration** -- Accept an array of `ProviderPattern` objects from config and check them before built-in patterns. | Status: not_done
-- [ ] **Implement URL match check** -- Given a URL, return true/false for whether it matches any known LLM provider endpoint (used by the fetch interceptor to decide whether to intercept). | Status: not_done
+- [x] **Implement URL match check** -- Given a URL, return true/false for whether it matches any known LLM provider endpoint (used by the fetch interceptor to decide whether to intercept). | Status: done
 
 ---
 
 ## Phase 5: Sensitive Data Scrubbing (`src/scrub.ts`)
 
-- [ ] **Implement default header scrubbing** -- Scrub `authorization`, `api-key`, `x-api-key`, `openai-organization`, `openai-project` header values, replacing with `[SCRUBBED]`. | Status: not_done
-- [ ] **Implement custom header pattern scrubbing** -- Accept additional `RegExp[]` patterns from `ScrubConfig.patterns` and scrub matching header names. | Status: not_done
+- [x] **Implement default header scrubbing** -- Scrub `authorization`, `api-key`, `x-api-key`, `openai-organization`, `openai-project` header values, replacing with `[SCRUBBED]`. | Status: done
+- [x] **Implement custom header pattern scrubbing** -- Accept additional `RegExp[]` patterns from `ScrubConfig.patterns` and scrub matching header names. | Status: done
 - [ ] **Implement body field scrubbing** -- Recursively walk request body object. If a field name matches any pattern in `ScrubConfig.bodyPatterns`, replace its value with the replacement string. | Status: not_done
-- [ ] **Implement env var placeholder substitution** -- Given an `envVarMap` (actual value -> placeholder), replace any occurrence of the actual value anywhere in the serialized cassette with the placeholder string. | Status: not_done
-- [ ] **Implement configurable replacement string** -- Use `ScrubConfig.replacement` (default `'[SCRUBBED]'`) as the replacement value for all scrubbed fields. | Status: not_done
+- [x] **Implement env var placeholder substitution** -- Given an `envVarMap` (actual value -> placeholder), replace any occurrence of the actual value anywhere in the serialized cassette with the placeholder string. | Status: done
+- [x] **Implement configurable replacement string** -- Use `ScrubConfig.replacement` (default `'[SCRUBBED]'`) as the replacement value for all scrubbed fields. | Status: done
 - [ ] **Ensure scrubbing only affects serialized output** -- Scrubbing must happen at write time. In-memory objects during recording must retain real values. | Status: not_done
 - [ ] **Scrub response headers** -- Apply the same header scrubbing rules to response headers in cassette entries. | Status: not_done
 
@@ -70,10 +70,10 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 ## Phase 6: Cassette I/O (`src/cassette.ts`)
 
 - [ ] **Implement cassette name sanitization** -- Convert cassette name to filesystem-safe filename: lowercase, replace spaces with hyphens, remove special characters, append `.cassette.json` extension. | Status: not_done
-- [ ] **Implement cassette file path resolution** -- Given a cassette name and `cassettesDir`, resolve the full file path. Support both absolute and relative (to cwd) `cassettesDir`. | Status: not_done
-- [ ] **Implement cassette directory creation** -- Auto-create the cassettes directory (and parent directories) if it does not exist when writing a cassette. | Status: not_done
+- [x] **Implement cassette file path resolution** -- Given a cassette name and `cassettesDir`, resolve the full file path. Support both absolute and relative (to cwd) `cassettesDir`. | Status: done
+- [x] **Implement cassette directory creation** -- Auto-create the cassettes directory (and parent directories) if it does not exist when writing a cassette. | Status: done
 - [ ] **Implement cassette write (JSON serialization)** -- Serialize a `Cassette` object to JSON with 2-space indentation. Apply scrubbing before writing. Write atomically (write to temp file, then rename). | Status: not_done
-- [ ] **Implement cassette read (JSON deserialization)** -- Read a cassette JSON file from disk and parse it into a `Cassette` object. Throw `CassetteCorruptError` on invalid JSON. Throw `CassetteNotFoundError` if file does not exist (in replay mode). | Status: not_done
+- [x] **Implement cassette read (JSON deserialization)** -- Read a cassette JSON file from disk and parse it into a `Cassette` object. Throw `CassetteCorruptError` on invalid JSON. Throw `CassetteNotFoundError` if file does not exist (in replay mode). | Status: done
 - [ ] **Implement cassette version checking** -- Read the `version` field. Emit a warning (console.warn) if the version is older than the current format version. Throw if the version is unrecognized/too new. | Status: not_done
 - [ ] **Implement gzip support** -- When `gzip: true`, write cassettes as `.cassette.json.gz` using Node.js `zlib`. Read supports both gzipped and plain JSON transparently. | Status: not_done
 
@@ -83,8 +83,8 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ### Default Matching (`src/matching/default.ts`)
 
-- [ ] **Implement model name matching** -- Exact string comparison of the `model` field. Return 0 if models differ. | Status: not_done
-- [ ] **Implement messages array matching** -- Compare each message by `role` (exact match) and `content` (trimmed whitespace, collapsed internal whitespace). All messages must match in order. | Status: not_done
+- [x] **Implement model name matching** -- Exact string comparison of the `model` field. Return 0 if models differ. | Status: done
+- [x] **Implement messages array matching** -- Compare each message by `role` (exact match) and `content` (trimmed whitespace, collapsed internal whitespace). All messages must match in order. | Status: done
 - [ ] **Implement parameter matching** -- Compare `temperature`, `top_p`, `max_tokens` / `max_completion_tokens` with exact number match when present in both request and entry. | Status: not_done
 - [ ] **Implement tools/functions matching** -- Compare tool names and parameter schemas. Ignore description whitespace differences. | Status: not_done
 - [ ] **Implement response_format matching** -- Match `type` field exactly. For `json_schema`, compare schema structure. | Status: not_done
@@ -108,33 +108,33 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ### Hash-Based Matching (`src/matching/hash.ts`)
 
-- [ ] **Implement request hash computation** -- SHA-256 hash of canonicalized (sorted keys, scrubbed) request JSON using `node:crypto`. | Status: not_done
+- [x] **Implement request hash computation** -- SHA-256 hash of canonicalized (sorted keys, scrubbed) request JSON using `node:crypto`. | Status: done
 - [ ] **Implement hash-based lookup** -- Build a hash map from cassette entries' `requestHash` fields. Look up incoming request hash for O(1) matching. Fall back to full matching on hash miss. | Status: not_done
 
 ### Matcher Dispatcher (`src/matching/matcher.ts`)
 
 - [ ] **Implement strategy selection** -- Route to default, normalized, structural, or custom matching based on `MatchingConfig.strategy`. | Status: not_done
-- [ ] **Implement ordered matching** -- Compare the first unmatched request against the first unconsumed cassette entry. Consume entries sequentially. | Status: not_done
-- [ ] **Implement unordered matching** -- Compare each request against all unconsumed entries. Select the entry with the highest score above `matchThreshold`. | Status: not_done
+- [x] **Implement ordered matching** -- Compare the first unmatched request against the first unconsumed cassette entry. Consume entries sequentially. | Status: done
+- [x] **Implement unordered matching** -- Compare each request against all unconsumed entries. Select the entry with the highest score above `matchThreshold`. | Status: done
 - [ ] **Implement match threshold** -- Only accept matches with scores >= `matchThreshold` (default 0.8). | Status: not_done
-- [ ] **Implement hash-first lookup** -- Try hash-based matching first, fall back to the configured strategy on miss. | Status: not_done
+- [x] **Implement hash-first lookup** -- Try hash-based matching first, fall back to the configured strategy on miss. | Status: done
 
 ---
 
 ## Phase 8: Fetch Interceptor (`src/interceptor/fetch.ts`)
 
-- [ ] **Implement fetch patching** -- Store reference to original `globalThis.fetch`, replace with wrapper function. | Status: not_done
-- [ ] **Implement fetch restoration** -- Restore original `globalThis.fetch` when cassette is deactivated. Handle case where fetch was already patched by another library. | Status: not_done
-- [ ] **Implement URL pattern matching in wrapper** -- Check each outgoing request URL against provider patterns. Pass through non-matching requests to original fetch. | Status: not_done
-- [ ] **Implement request capture (record mode)** -- Forward request to real fetch, capture the response (body, headers, status), construct a `RecordedRequest` and `RecordedResponse`, store as a cassette entry. | Status: not_done
-- [ ] **Implement response injection (replay mode)** -- Match request against cassette entries, construct a synthetic `Response` object from recorded data (status, headers, body as JSON string), return it. | Status: not_done
-- [ ] **Implement auto mode logic** -- Attempt replay first. If no match found and cassette exists, record the new interaction and append. If no cassette exists, record all. | Status: not_done
-- [ ] **Implement passthrough mode** -- Do not intercept. Forward all requests to original fetch unmodified. | Status: not_done
-- [ ] **Implement non-streaming response capture** -- Read response body as JSON, store in `RecordedResponse.body`. | Status: not_done
+- [x] **Implement fetch patching** -- Store reference to original `globalThis.fetch`, replace with wrapper function. | Status: done
+- [x] **Implement fetch restoration** -- Restore original `globalThis.fetch` when cassette is deactivated. Handle case where fetch was already patched by another library. | Status: done
+- [x] **Implement URL pattern matching in wrapper** -- Check each outgoing request URL against provider patterns. Pass through non-matching requests to original fetch. | Status: done
+- [x] **Implement request capture (record mode)** -- Forward request to real fetch, capture the response (body, headers, status), construct a `RecordedRequest` and `RecordedResponse`, store as a cassette entry. | Status: done
+- [x] **Implement response injection (replay mode)** -- Match request against cassette entries, construct a synthetic `Response` object from recorded data (status, headers, body as JSON string), return it. | Status: done
+- [x] **Implement auto mode logic** -- Attempt replay first. If no match found and cassette exists, record the new interaction and append. If no cassette exists, record all. | Status: done
+- [x] **Implement passthrough mode** -- Do not intercept. Forward all requests to original fetch unmodified. | Status: done
+- [x] **Implement non-streaming response capture** -- Read response body as JSON, store in `RecordedResponse.body`. | Status: done
 - [ ] **Implement streaming response detection** -- Check `Content-Type: text/event-stream` to identify streaming responses. | Status: not_done
 - [ ] **Implement error response handling** -- When `recordErrors: false` (default), propagate errors and do not write cassette. When `recordErrors: true`, record 4xx/5xx responses as entries. | Status: not_done
 - [ ] **Handle concurrent cassette prevention** -- Throw an error if a second cassette is activated while one is already active. | Status: not_done
-- [ ] **Handle already-patched fetch** -- If `globalThis.fetch` is already patched (e.g., by msw), patch on top and restore correctly (restore to the state before llm-vcr patched, not necessarily the original built-in fetch). | Status: not_done
+- [x] **Handle already-patched fetch** -- If `globalThis.fetch` is already patched (e.g., by msw), patch on top and restore correctly (restore to the state before llm-vcr patched, not necessarily the original built-in fetch). | Status: done
 
 ---
 
@@ -221,15 +221,15 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 - [ ] **Implement LLMVcr class constructor** -- Accept `VCRConfig`, merge with defaults, resolve environment variable overrides (`LLM_VCR_MODE`, `LLM_VCR_DIR`, `LLM_VCR_UPDATE`). | Status: not_done
 - [ ] **Implement default config values** -- Apply all defaults from spec section 14: `cassettesDir: '__cassettes__'`, `mode: 'auto'`, default scrub/matching/streaming configs. | Status: not_done
 - [ ] **Implement environment variable overrides** -- `LLM_VCR_MODE` overrides mode. `LLM_VCR_DIR` overrides cassettesDir. `LLM_VCR_UPDATE=1/true/yes` sets mode to `record`. | Status: not_done
-- [ ] **Implement withCassette method** -- Activate cassette, run fn, deactivate cassette, write cassette if recording. Handle errors gracefully (deactivate even on throw). | Status: not_done
+- [x] **Implement withCassette method** -- Activate cassette, run fn, deactivate cassette, write cassette if recording. Handle errors gracefully (deactivate even on throw). | Status: done
 - [ ] **Implement useCassette method** -- Return a `CassetteController` object with `start()`, `stop()`, `state`, and `entries` properties. | Status: not_done
-- [ ] **Implement record mode behavior** -- Forward all LLM calls to real API. Overwrite cassette file on completion. Do not write if any API call fails (unless `recordErrors: true`). | Status: not_done
-- [ ] **Implement replay mode behavior** -- Load cassette from file. Match each request against entries. Throw `CassetteNotFoundError` if file missing. Throw `CassetteMismatchError` if no match. | Status: not_done
-- [ ] **Implement auto mode behavior** -- If cassette file exists, attempt replay. On miss, record the new call and append. If no file, record all. Write updated cassette on completion if new entries added. | Status: not_done
-- [ ] **Implement passthrough mode behavior** -- Do not intercept any calls. No cassette read or write. | Status: not_done
+- [x] **Implement record mode behavior** -- Forward all LLM calls to real API. Overwrite cassette file on completion. Do not write if any API call fails (unless `recordErrors: true`). | Status: done
+- [x] **Implement replay mode behavior** -- Load cassette from file. Match each request against entries. Throw `CassetteNotFoundError` if file missing. Throw `CassetteMismatchError` if no match. | Status: done
+- [x] **Implement auto mode behavior** -- If cassette file exists, attempt replay. On miss, record the new call and append. If no file, record all. Write updated cassette on completion if new entries added. | Status: done
+- [x] **Implement passthrough mode behavior** -- Do not intercept any calls. No cassette read or write. | Status: done
 - [ ] **Implement wrapClient method** -- Delegate to SDK interceptor. Return a Proxy-wrapped client. | Status: not_done
 - [ ] **Implement listCassettes method** -- Scan cassettes directory, parse each file's metadata, return `CassetteSummary[]`. | Status: not_done
-- [ ] **Implement loadCassette method** -- Read and parse a specific cassette file by name. | Status: not_done
+- [x] **Implement loadCassette method** -- Read and parse a specific cassette file by name. | Status: done
 - [ ] **Implement deleteCassette method** -- Delete a cassette file by name from the cassettes directory. | Status: not_done
 - [ ] **Implement rerecordCassette method** -- Run the provided function in record mode, overwriting the existing cassette. | Status: not_done
 - [ ] **Implement findStaleCassettes method** -- Scan test files matching a glob for cassette name references. Compare against cassette files on disk. Return unreferenced cassette names. | Status: not_done
@@ -237,9 +237,9 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ### Top-Level Convenience Functions
 
-- [ ] **Implement standalone withCassette function** -- Create a default `LLMVcr` instance (or reuse a singleton) and delegate to its `withCassette`. | Status: not_done
+- [x] **Implement standalone withCassette function** -- Create a default `LLMVcr` instance (or reuse a singleton) and delegate to its `withCassette`. | Status: done
 - [ ] **Implement standalone useCassette function** -- Create/reuse default instance and delegate. | Status: not_done
-- [ ] **Implement standalone createVCR function** -- Construct and return a new `LLMVcr` instance. | Status: not_done
+- [x] **Implement standalone createVCR function** -- Construct and return a new `LLMVcr` instance. | Status: done
 - [ ] **Implement standalone record function** -- Convenience for SDK-level recording. Wrap client and record to a cassette path. | Status: not_done
 - [ ] **Implement standalone replay function** -- Convenience for activating replay mode for a specific cassette path. Return `{ start(), stop() }`. | Status: not_done
 
@@ -248,8 +248,8 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 ## Phase 14: Entry Point (`src/index.ts`)
 
 - [ ] **Export core functions** -- Export `withCassette`, `useCassette`, `createVCR`, `record`, `replay`, and `LLMVcr` from `./vcr`. | Status: not_done
-- [ ] **Export all types** -- Export all interfaces and types from `./types` using `export type`. | Status: not_done
-- [ ] **Export error classes** -- Export `CassetteMismatchError`, `CassetteNotFoundError`, `CassetteCorruptError` from `./errors`. | Status: not_done
+- [x] **Export all types** -- Export all interfaces and types from `./types` using `export type`. | Status: done
+- [x] **Export error classes** -- Export `CassetteMismatchError`, `CassetteNotFoundError`, `CassetteCorruptError` from `./errors`. | Status: done
 
 ---
 
@@ -285,10 +285,10 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ## Phase 17: Cassette File Format Details
 
-- [ ] **Implement assembled response generation for non-streaming** -- For non-streaming responses, the body is stored directly. No assembly needed. Ensure the structure matches the spec. | Status: not_done
+- [x] **Implement assembled response generation for non-streaming** -- For non-streaming responses, the body is stored directly. No assembly needed. Ensure the structure matches the spec. | Status: done
 - [ ] **Implement assembled response generation for streaming** -- After recording all chunks, assemble the full response (content, finish_reason, usage, tool_calls) using the appropriate provider parser. Store in `assembled` field. | Status: not_done
 - [ ] **Implement cost estimate computation** -- Compute `costEstimate` from the response's `usage` field and model pricing (best-effort). Store in entry metadata. | Status: not_done
-- [ ] **Implement format version 1** -- Set `version: 1` on all newly written cassettes. Define the complete v1 schema. | Status: not_done
+- [x] **Implement format version 1** -- Set `version: 1` on all newly written cassettes. Define the complete v1 schema. | Status: done
 
 ---
 
@@ -301,12 +301,12 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ## Phase 19: Edge Case Handling
 
-- [ ] **Handle test throw before cassette stop** -- If the function passed to `withCassette` throws, ensure the cassette is deactivated and interceptors are restored. In record mode, do not write incomplete cassettes. | Status: not_done
+- [x] **Handle test throw before cassette stop** -- If the function passed to `withCassette` throws, ensure the cassette is deactivated and interceptors are restored. In record mode, do not write incomplete cassettes. | Status: done
 - [ ] **Handle unused cassette entries in auto mode** -- Preserve unused entries when replaying in auto mode (do not delete entries that were not matched). | Status: not_done
 - [ ] **Handle concurrent withCassette calls** -- Each test must get its own cassette scope. Prevent shared state between parallel tests. Throw if nested cassettes are attempted. | Status: not_done
 - [ ] **Handle very large cassette files** -- Ensure cassettes over 10MB load without timeout and matching completes in reasonable time. | Status: not_done
 - [ ] **Handle GET requests to LLM APIs** -- Record and match by URL and headers only when body is absent. | Status: not_done
-- [ ] **Handle non-JSON response bodies** -- If response content-type is not JSON, store raw body as a string. | Status: not_done
+- [x] **Handle non-JSON response bodies** -- If response content-type is not JSON, store raw body as a string. | Status: done
 - [ ] **Handle empty JSON cassette** -- Valid JSON with no entries should result in no matches (not an error in auto mode, error in replay mode). | Status: not_done
 - [ ] **Handle cassette file with old version** -- Read with a warning, do not error. Write in latest version. | Status: not_done
 
@@ -316,16 +316,16 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ### VCR Core Tests (`src/__tests__/vcr.test.ts`)
 
-- [ ] **Test withCassette record mode** -- Verify real API call is made (mock HTTP server), cassette file is written with correct structure. | Status: not_done
-- [ ] **Test withCassette replay mode** -- Pre-create a cassette file. Verify no HTTP request is made. Verify correct response is returned. | Status: not_done
-- [ ] **Test withCassette auto mode (no existing cassette)** -- Verify recording happens and cassette is created. | Status: not_done
-- [ ] **Test withCassette auto mode (existing cassette, match)** -- Verify replay from existing cassette, no API call. | Status: not_done
+- [x] **Test withCassette record mode** -- Verify real API call is made (mock HTTP server), cassette file is written with correct structure. | Status: done
+- [x] **Test withCassette replay mode** -- Pre-create a cassette file. Verify no HTTP request is made. Verify correct response is returned. | Status: done
+- [x] **Test withCassette auto mode (no existing cassette)** -- Verify recording happens and cassette is created. | Status: done
+- [x] **Test withCassette auto mode (existing cassette, match)** -- Verify replay from existing cassette, no API call. | Status: done
 - [ ] **Test withCassette auto mode (existing cassette, no match)** -- Verify new call is recorded and appended. | Status: not_done
-- [ ] **Test withCassette passthrough mode** -- Verify no interception, no cassette read/write. | Status: not_done
+- [x] **Test withCassette passthrough mode** -- Verify no interception, no cassette read/write. | Status: done
 - [ ] **Test useCassette start/stop lifecycle** -- Verify state transitions: idle -> active -> stopped. | Status: not_done
 - [ ] **Test createVCR with custom config** -- Verify config is applied to all cassettes created from the instance. | Status: not_done
 - [ ] **Test environment variable overrides** -- Verify `LLM_VCR_MODE`, `LLM_VCR_DIR`, `LLM_VCR_UPDATE` override config. | Status: not_done
-- [ ] **Test error propagation in withCassette** -- Verify that errors thrown in fn propagate, and cassette is properly deactivated. | Status: not_done
+- [x] **Test error propagation in withCassette** -- Verify that errors thrown in fn propagate, and cassette is properly deactivated. | Status: done
 - [ ] **Test multiple entries in single cassette** -- Make 3 API calls, verify cassette has 3 entries. Replay returns correct response for each. | Status: not_done
 
 ### Cassette I/O Tests (`src/__tests__/cassette.test.ts`)
@@ -345,7 +345,7 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 - [ ] **Test fetch is patched when cassette is active** -- Verify `globalThis.fetch` is different from the original. | Status: not_done
 - [ ] **Test fetch is restored when cassette is deactivated** -- Verify `globalThis.fetch` is restored to original. | Status: not_done
 - [ ] **Test LLM URLs are intercepted** -- Make a fetch to `api.openai.com`, verify it is captured. | Status: not_done
-- [ ] **Test non-LLM URLs pass through** -- Make a fetch to `example.com`, verify it reaches the original fetch. | Status: not_done
+- [x] **Test non-LLM URLs pass through** -- Make a fetch to `example.com`, verify it reaches the original fetch. | Status: done
 - [ ] **Test activating second cassette throws** -- Activate one cassette, try to activate another, verify error. | Status: not_done
 - [ ] **Test nested withCassette throws** -- Call withCassette inside another withCassette, verify error. | Status: not_done
 
@@ -383,11 +383,11 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ### Scrubbing Tests (`src/__tests__/scrub.test.ts`)
 
-- [ ] **Test default Authorization header scrubbing** -- Verify `Bearer sk-xxx` is replaced with `[SCRUBBED]`. | Status: not_done
-- [ ] **Test default api-key header scrubbing** -- Verify `api-key` and `x-api-key` values are scrubbed. | Status: not_done
+- [x] **Test default Authorization header scrubbing** -- Verify `Bearer sk-xxx` is replaced with `[SCRUBBED]`. | Status: done
+- [x] **Test default api-key header scrubbing** -- Verify `api-key` and `x-api-key` values are scrubbed. | Status: done
 - [ ] **Test custom header pattern scrubbing** -- Add custom pattern, verify matching headers are scrubbed. | Status: not_done
 - [ ] **Test body field pattern scrubbing** -- Add body pattern `/password/i`, verify matching fields are scrubbed recursively. | Status: not_done
-- [ ] **Test env var placeholder substitution** -- Map real key to `${OPENAI_API_KEY}`, verify replacement in serialized output. | Status: not_done
+- [x] **Test env var placeholder substitution** -- Map real key to `${OPENAI_API_KEY}`, verify replacement in serialized output. | Status: done
 - [ ] **Test nested body field scrubbing** -- Deeply nested object with sensitive field names is scrubbed recursively. | Status: not_done
 - [ ] **Test scrubbing does not modify in-memory objects** -- Verify original objects retain real values after scrubbing. | Status: not_done
 - [ ] **Test response header scrubbing** -- Verify sensitive response headers are also scrubbed. | Status: not_done
@@ -408,11 +408,11 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ### Provider Tests (`src/__tests__/providers.test.ts`)
 
-- [ ] **Test OpenAI URL detection** -- `api.openai.com/v1/chat/completions` -> `'openai'`. | Status: not_done
+- [x] **Test OpenAI URL detection** -- `api.openai.com/v1/chat/completions` -> `'openai'`. | Status: done
 - [ ] **Test Azure OpenAI URL detection** -- `*.openai.azure.com/openai/deployments/*/chat/completions` -> `'openai'`. | Status: not_done
-- [ ] **Test Anthropic URL detection** -- `api.anthropic.com/v1/messages` -> `'anthropic'`. | Status: not_done
+- [x] **Test Anthropic URL detection** -- `api.anthropic.com/v1/messages` -> `'anthropic'`. | Status: done
 - [ ] **Test Google URL detection** -- Both `generateContent` and `streamGenerateContent` URLs -> `'google'`. | Status: not_done
-- [ ] **Test unknown URL detection** -- `api.example.com/v1/chat` -> `'unknown'`. | Status: not_done
+- [x] **Test unknown URL detection** -- `api.example.com/v1/chat` -> `'unknown'`. | Status: done
 - [ ] **Test custom provider pattern** -- Register custom pattern, verify detection works. | Status: not_done
 
 ### Error Tests (`src/__tests__/errors.test.ts`)
