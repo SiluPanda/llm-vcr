@@ -3,6 +3,7 @@
 Record and replay LLM API calls for deterministic testing.
 
 [![npm version](https://img.shields.io/npm/v/llm-vcr.svg)](https://www.npmjs.com/package/llm-vcr)
+[![npm downloads](https://img.shields.io/npm/dt/llm-vcr.svg)](https://www.npmjs.com/package/llm-vcr)
 [![license](https://img.shields.io/npm/l/llm-vcr.svg)](https://github.com/SiluPanda/llm-vcr/blob/master/LICENSE)
 [![node](https://img.shields.io/node/v/llm-vcr.svg)](https://nodejs.org)
 
