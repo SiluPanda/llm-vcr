@@ -1,6 +1,6 @@
 {
   "name": "llm-vcr",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Record and replay LLM API calls for deterministic testing",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
