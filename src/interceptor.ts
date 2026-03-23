@@ -219,7 +219,7 @@ export async function captureResponse(
   provider: string,
   start: number,
   request: ReturnType<typeof buildRecordedRequest>,
-  config: VCRConfig,
+  _config: VCRConfig,
 ): Promise<{ response: Response; entry: CassetteEntry }> {
   const realResponse = await originalFetch!(url, init);
   const durationMs = Date.now() - start;
@@ -239,11 +239,7 @@ export async function captureResponse(
   const requestHash = hashRequest(body);
 
   const entry: CassetteEntry = {
-    request: {
-      ...request,
-      body: scrubBody(body, config.scrub),
-      headers: scrubHeaders(request.headers, config.scrub),
-    },
+    request,
     response: {
       status: realResponse.status,
       headers: responseHeaders,
