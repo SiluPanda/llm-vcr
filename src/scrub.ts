@@ -28,7 +28,7 @@ export function scrubHeaders(
     // Apply envVarMap: replace known env var values with their names
     for (const [envName, envValue] of Object.entries(envVarMap)) {
       if (envValue && scrubbed.includes(envValue)) {
-        scrubbed = scrubbed.replace(envValue, `\${${envName}}`);
+        scrubbed = scrubbed.replaceAll(envValue, `\${${envName}}`);
       }
     }
 
@@ -70,7 +70,7 @@ function scrubValue(
     let result = value;
     for (const [envName, envValue] of Object.entries(envVarMap)) {
       if (envValue && result.includes(envValue)) {
-        result = result.replace(envValue, `\${${envName}}`);
+        result = result.replaceAll(envValue, `\${${envName}}`);
       }
     }
     for (const pattern of patterns) {

@@ -5,7 +5,7 @@ import { mkdirSync, rmSync, existsSync } from 'fs';
 import { createVCR } from '../vcr.js';
 import { hashRequest } from '../hash.js';
 import { detectProvider, isLLMProvider } from '../provider.js';
-import { scrubHeaders } from '../scrub.js';
+import { scrubHeaders, scrubBody } from '../scrub.js';
 import { CassetteMismatchError } from '../errors.js';
 import { loadCassette } from '../cassette.js';
 
@@ -102,6 +102,15 @@ describe('scrubHeaders', () => {
       { envVarMap: { MY_SECRET: 'actual-secret-value' } },
     );
     expect(result['x-custom-header']).toBe('${MY_SECRET}');
+  });
+
+  it('replaces all occurrences of the same secret value', () => {
+    const result = scrubHeaders(
+      { 'x-tokens': 'tok_abc123 and tok_abc123 again' },
+      { envVarMap: { API_TOKEN: 'tok_abc123' } },
+    );
+    expect(result['x-tokens']).toBe('${API_TOKEN} and ${API_TOKEN} again');
+    expect(result['x-tokens']).not.toContain('tok_abc123');
   });
 });
 
@@ -290,5 +299,16 @@ describe('withCassette — non-LLM URLs pass through interceptor transparently',
     });
 
     expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('scrubBody', () => {
+  it('replaces all occurrences of env var values in body strings', () => {
+    const result = scrubBody(
+      { prompt: 'key=secret123 and key=secret123' },
+      { envVarMap: { MY_KEY: 'secret123' } },
+    );
+    expect((result as Record<string, string>).prompt).toBe('key=${MY_KEY} and key=${MY_KEY}');
+    expect((result as Record<string, string>).prompt).not.toContain('secret123');
   });
 });
