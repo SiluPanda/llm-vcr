@@ -302,6 +302,92 @@ describe('withCassette — non-LLM URLs pass through interceptor transparently',
   });
 });
 
+describe('captureResponse — non-JSON response body', () => {
+  let cassettesDir: string;
+
+  beforeEach(() => {
+    cassettesDir = makeTempDir();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    rmSync(cassettesDir, { recursive: true, force: true });
+  });
+
+  it('records plain text response body without data loss', async () => {
+    const plainTextBody = 'This is plain text, not JSON';
+    const mockFetch = vi.fn().mockResolvedValue(
+      new Response(plainTextBody, {
+        status: 200,
+        headers: { 'content-type': 'text/plain' },
+      }),
+    );
+    vi.stubGlobal('fetch', mockFetch);
+
+    const vcr = createVCR({ cassettesDir, mode: 'record' });
+
+    await vcr.withCassette('text-response', async () => {
+      const resp = await fetch(OPENAI_URL, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(BASE_BODY),
+      });
+      const text = await resp.text();
+      expect(text).toBe(JSON.stringify(plainTextBody));
+    });
+
+    const cassettePath = join(cassettesDir, 'text-response.json');
+    const cassette = loadCassette(cassettePath);
+    expect(cassette).not.toBeNull();
+    expect(cassette!.entries).toHaveLength(1);
+    expect(cassette!.entries[0].response.body).toBe(plainTextBody);
+  });
+});
+
+describe('patchedFetch — Request object body extraction', () => {
+  let cassettesDir: string;
+
+  beforeEach(() => {
+    cassettesDir = makeTempDir();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    rmSync(cassettesDir, { recursive: true, force: true });
+  });
+
+  it('preserves the request body when url is a Request object', async () => {
+    const mockBody = makeOpenAIResponse('Request object response');
+    const mockFetch = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify(mockBody), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      }),
+    );
+    vi.stubGlobal('fetch', mockFetch);
+
+    const vcr = createVCR({ cassettesDir, mode: 'record' });
+
+    await vcr.withCassette('request-object-body', async () => {
+      const request = new Request(OPENAI_URL, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(BASE_BODY),
+      });
+      const resp = await fetch(request);
+      const data = await resp.json() as { choices: Array<{ message: { content: string } }> };
+      expect(data.choices[0].message.content).toBe('Request object response');
+    });
+
+    const cassettePath = join(cassettesDir, 'request-object-body.json');
+    const cassette = loadCassette(cassettePath);
+    expect(cassette).not.toBeNull();
+    expect(cassette!.entries).toHaveLength(1);
+    // The request body should be properly extracted, not "{}" from a ReadableStream
+    expect(cassette!.entries[0].request.body).toEqual(BASE_BODY);
+  });
+});
+
 describe('scrubBody', () => {
   it('replaces all occurrences of env var values in body strings', () => {
     const result = scrubBody(

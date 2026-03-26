@@ -88,14 +88,20 @@ async function patchedFetch(
 
   // Parse the request body
   let body: Record<string, unknown> = {};
-  const initBody = url instanceof Request ? url.body : init?.body;
-  if (initBody) {
+  if (url instanceof Request) {
     try {
-      const bodyText = typeof initBody === 'string'
-        ? initBody
-        : initBody instanceof Uint8Array
-          ? new TextDecoder().decode(initBody)
-          : JSON.stringify(initBody);
+      const bodyText = await url.clone().text();
+      body = JSON.parse(bodyText) as Record<string, unknown>;
+    } catch {
+      // non-JSON body — treat as empty for matching purposes
+    }
+  } else if (init?.body) {
+    try {
+      const bodyText = typeof init.body === 'string'
+        ? init.body
+        : init.body instanceof Uint8Array
+          ? new TextDecoder().decode(init.body)
+          : JSON.stringify(init.body);
       body = JSON.parse(bodyText) as Record<string, unknown>;
     } catch {
       // non-JSON body — treat as empty for matching purposes
@@ -226,11 +232,12 @@ export async function captureResponse(
 
   // Clone the response so we can read the body and still return a usable Response
   const cloned = realResponse.clone();
+  const bodyText = await cloned.text();
   let responseBody: unknown;
   try {
-    responseBody = await cloned.json();
+    responseBody = JSON.parse(bodyText);
   } catch {
-    responseBody = await cloned.text();
+    responseBody = bodyText;
   }
 
   const responseHeaders: Record<string, string> = {};
